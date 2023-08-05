@@ -1,10 +1,13 @@
 import { Client, isFullPage } from "@notionhq/client";
+import { Toggl } from "toggl-track";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-async function main() {
-  const today = new Date();
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+async function createPageInNotion() {
   const todayString = `${today.getFullYear()}/${
     today.getMonth() + 1
   }/${today.getDate()}`;
@@ -47,8 +50,37 @@ async function main() {
   }
 }
 
-main()
-  .then(() => process.exit(0))
+async function getItemsFromToggl(): Promise<any> {
+  const toggl = new Toggl({
+    auth: {
+      token: process.env.TOGGL_TRACK_API_TOKEN || "",
+    },
+  });
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const entries = await toggl.timeEntry.list({
+    startDate: yesterday.toISOString(),
+    endDate: today.toISOString(),
+  });
+
+  // description: minutes
+  const reduced = entries.reduce((accumulator: any, currentValue: any) => {
+    if (!accumulator[currentValue.description]) {
+      accumulator[currentValue.description] = 0;
+    }
+    accumulator[currentValue.description] += Math.round(
+      currentValue.duration / 60
+    );
+    return accumulator;
+  }, {});
+  console.log(reduced);
+
+  return reduced;
+}
+
+getItemsFromToggl()
+  .then((reduced) => process.exit(0))
   .catch((err) => {
     console.error(err);
     process.exit(1);
