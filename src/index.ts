@@ -1,8 +1,4 @@
 import { Client, isFullPage } from "@notionhq/client";
-import {
-  CreatePageResponse,
-  createDatabase,
-} from "@notionhq/client/build/src/api-endpoints";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -22,7 +18,7 @@ async function main() {
     database_id: databaseId,
   });
 
-  const createPageResponse: CreatePageResponse = await notion.pages.create({
+  const createPageResponse = await notion.pages.create({
     parent: {
       database_id: databaseId,
     },
