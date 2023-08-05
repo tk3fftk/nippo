@@ -1,0 +1,20 @@
+name: Nippo Generator
+on:
+  schedule:
+    - cron: "2 22 * * *" # 毎日 2 時 22 分(JST)に実行
+  workflow_dispatch:
+jobs:
+  notion-daily-generator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: npm
+      - run: npm ci
+      - run: npm start
+        env:
+          TZ: "Asia/Tokyo"
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
