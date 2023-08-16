@@ -18,3 +18,4 @@ jobs:
           TZ: "Asia/Tokyo"
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          TOGGL_TRACK_API_TOKEN: ${{ secrets.TOGGL_TRACK_API_TOKEN }}
