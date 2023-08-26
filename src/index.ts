@@ -51,7 +51,7 @@ async function createPageInNotion() {
 async function addBlockToNotion(text: object) {
   const yesterdayString = `${yesterday.getFullYear()}-${String(
     yesterday.getMonth() + 1,
-  ).padStart(2, "0")}-${String(yesterday.getDate()).padStart(2, "0")}`;
+  ).padStart(2, "0")}-${String(yesterday.getDate() - 1).padStart(2, "0")}`;
 
   const response = await notion.databases.query({
     database_id: databaseId,
