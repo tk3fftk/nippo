@@ -18,6 +18,9 @@
     "dotenv": "^16.4.5",
     "toggl-track": "^0.8.0"
   },
+  "overrides": {
+    "axios": "1.15.0"
+  },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
     "@types/node": "^25.2.0",
